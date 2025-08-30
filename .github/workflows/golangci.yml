@@ -6,8 +6,8 @@ on:
       - ".github/workflows/golangci.yml"
 jobs:
   golangci-lint:
-    name:golangci-lint
-  runs-on: ubuntu-latest
+    name: golangci-lint
+    runs-on: ubuntu-latest
   steps:
     - name: Check out code into Go module directory
       uses: actions/checkout@v3
