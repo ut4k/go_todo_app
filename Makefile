@@ -10,7 +10,7 @@ build-local:
 	docker compose build --no-cache
 
 up:
-	docker compose up -docker
+	docker compose up -d
 
 down:
 	docker compose down

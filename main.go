@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/ut4k/go_todo_app/config"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -18,18 +19,31 @@ func main() {
 		os.Exit(1)
 	}
 	p := os.Args[1]
-	l, err := net.Listen("tcp", ":"+p)
+	// l, err := net.Listen("tcp", ":"+p)
+	_, err := net.Listen("tcp", ":"+p)
 	if err != nil {
 		log.Fatalf("failed to listen port %s: %v", p, err)
 	}
 
-	if err := run(context.Background(), l); err != nil {
+	// if err := run(context.Background(), l); err != nil {
+	if err := run(context.Background()); err != nil {
 		fmt.Printf("failed to terminate server: %v", err)
 		os.Exit(1)
 	}
 }
 
-func run(ctx context.Context, l net.Listener) error {
+// func run(ctx context.Context, l net.Listener) error {
+func run(ctx context.Context) error {
+	cfg, err := config.New()
+	if err != nil {
+		return err
+	}
+	l, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.Port))
+	if err != nil {
+		log.Fatalf("failed to listen port %d: %v", cfg.Port, err)
+	}
+	url := fmt.Sprintf("http://%s", l.Addr().String())
+	log.Printf("start with: %v", url)
 	s := &http.Server{
 		// 引数で受け取ったnet.Listenerを利用するのでAddrフィールド(ポート)は指定しない
 		// Addr: ":18080",
