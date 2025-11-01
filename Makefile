@@ -4,7 +4,7 @@
 DOCKER_TAG := latest
 build:
 	docker build -t ut4k/gotodo:${DOCKER_TAG} \
-		-- target deploy ./
+		--target deploy ./
 
 build-local:
 	docker compose build --no-cache
